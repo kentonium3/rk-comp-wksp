@@ -1,0 +1,31 @@
+{
+  "support": {
+    "contacts": [
+      {
+        "name": "Kent Gale",
+        "email": "kent@example.com"
+      }
+    ],
+    "emailFrom": "robkanzer@robkanzer.com",
+    "smtpServer": "smtp.gmail.com",
+    "smtpPort": 587
+  },
+  "webServer": {
+    "port": 8080,
+    "docRoot": "$env:USERPROFILE\\Documents\\Rob's Computer Manual"
+  },
+  "repository": {
+    "localPath": "$env:USERPROFILE\\rk-comp-wksp",
+    "deployPath": "$env:USERPROFILE\\Documents\\Rob's Computer Manual",
+    "githubUrl": "https://github.com/kentonium3/rk-comp-wksp.git"
+  },
+  "logging": {
+    "path": "$env:USERPROFILE\\Documents\\Rob's Computer Manual\\logs",
+    "retentionDays": 30
+  },
+  "system": {
+    "computerName": "$env:COMPUTERNAME",
+    "userName": "$env:USERNAME",
+    "userProfile": "$env:USERPROFILE"
+  }
+}
