@@ -1,0 +1,15 @@
+# Obsidian
+.obsidian/
+*.tmp
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+temp/
+tmp/
