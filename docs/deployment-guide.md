@@ -9,7 +9,7 @@
 
 ### Information Required
 - [ ] Rob's Gmail address: `robkanzer@robkanzer.com`
-- [ ] Kent's notification email: `kent@kentgale.com` 
+- [ ] Kent's notification email: `kentgale@gmail.com` 
 - [ ] Rob's Windows username (for path tokenization)
 - [ ] AnyDesk connection details for remote setup session
 
