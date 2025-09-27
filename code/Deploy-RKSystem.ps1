@@ -182,7 +182,7 @@ try {
     $config = @{
         support = @{
             contacts = @(
-                @{ name = "Kent Gale"; email = "kent@example.com" }
+                @{ name = "Kent Gale"; email = "kentgale@gmail.com" }
             )
             emailFrom = "robkanzer@robkanzer.com"
             smtpServer = "smtp.gmail.com"
@@ -357,7 +357,7 @@ try {
     Write-Host "  3. Complete email credential setup if not done" -ForegroundColor White
     Write-Host "  4. Verify scheduled tasks are working (if admin)" -ForegroundColor White
     Write-Host ""
-    Write-Host "Support: Kent Gale - kent@example.com" -ForegroundColor Cyan
+    Write-Host "Support: Kent Gale - kentgale@gmail.com" -ForegroundColor Cyan
     Write-Host ""
     
 }
@@ -366,6 +366,6 @@ catch {
     Write-Host "Deployment failed: $($_.Exception.Message)" -ForegroundColor Red
     Write-Host ""
     Write-Host "Please check the error message above and try again." -ForegroundColor Yellow
-    Write-Host "For assistance, contact: kent@example.com" -ForegroundColor Yellow
+    Write-Host "For assistance, contact: kentgale@gmail.com" -ForegroundColor Yellow
     exit 1
 }
