@@ -166,8 +166,10 @@ try {
     git config user.name "$TargetUser - $env:COMPUTERNAME"
     git config user.email "robkanzer@robkanzer.com"
     git config credential.helper manager-core
+    git config credential.useHttpPath true
     Pop-Location
     Write-Host "  ✓ Git configuration updated" -ForegroundColor Green
+    Write-Host "    Note: If prompted for GitHub credentials, use kentonium3 username" -ForegroundColor Gray
     
     # Step 4: Create Configuration
     Write-Host ""

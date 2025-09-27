@@ -10,7 +10,8 @@
 ### Information Required
 - [ ] Rob's Gmail address: `robkanzer@robkanzer.com`
 - [ ] Kent's notification email: `kentgale@gmail.com` 
-- [ ] Rob's Windows username (for path tokenization)
+- [ ] Rob's Windows username: `robka`
+- [ ] GitHub Personal Access Token for kentonium3 account
 - [ ] AnyDesk connection details for remote setup session
 
 ### System Requirements
@@ -41,7 +42,15 @@ ls -la docs/
 cat config/settings.json | grep -A5 "Email"
 ```
 
-#### 1.3 AnyDesk Session Setup
+#### 1.3 GitHub Authentication Setup
+```bash
+# Create Personal Access Token (if not already done)
+# 1. Go to GitHub.com → Settings → Developer settings → Personal access tokens
+# 2. Generate new token (classic) with 'repo' scope
+# 3. Save token securely for deployment use
+```
+
+#### 1.4 AnyDesk Session Setup
 - [ ] Coordinate remote access session with Rob
 - [ ] Verify AnyDesk connectivity
 - [ ] Confirm administrator access availability
@@ -102,9 +111,14 @@ The deployment script will automatically:
 Watch for:
 - ✅ Module installation confirmations
 - ✅ Component installation progress
+- ✅ **GitHub credential prompts** (use kentonium3 + Personal Access Token)
 - ✅ Credential configuration prompts
 - ✅ Task creation notifications
 - ✅ Health check results
+
+**Important**: If prompted for GitHub credentials:
+- Username: `kentonium3`
+- Password: `[Your GitHub Personal Access Token]`
 
 ### Phase 4: Gmail App Password Configuration
 
@@ -291,6 +305,18 @@ Remove-Item -Path "$env:USERPROFILE\Desktop\Refresh Manual.lnk" -Force
 ```powershell
 git config --global user.name "Rob Kanzer"
 git config --global user.email "robkanzer@robkanzer.com"
+```
+
+### GitHub Authentication Issues
+**Problem**: Git operations fail with "Authentication required" or "Access denied"  
+**Solution**: Store GitHub credentials in Windows Credential Manager:
+```powershell
+# Remove any existing credentials
+cmdkey /delete:git:https://github.com
+
+# When prompted during git operations, use:
+# Username: kentonium3
+# Password: [Your GitHub Personal Access Token]
 ```
 
 ## Success Criteria
