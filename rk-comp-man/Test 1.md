@@ -17,7 +17,7 @@
 
 When you open 1Password, you'll see the main dashboard that gives you access to all your saved information. The interface is designed to be simple and organized.
 
-![[1password-main.png]]
+![](<./assets/screenshots/1password-main.png>)
 
 **What you'll see in the main interface:**
 
@@ -31,7 +31,7 @@ When you open 1Password, you'll see the main dashboard that gives you access to 
 
 The search function is one of the most powerful features in 1Password. Instead of scrolling through long lists, you can find exactly what you need in seconds.
 
-![[1password-search.png]]
+![](<./assets/screenshots/1password-search.png>)
 
 **How to use the search feature:**
 

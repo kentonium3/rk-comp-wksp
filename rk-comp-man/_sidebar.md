@@ -1,11 +1,11 @@
 * [🏠 Home](/)
 
 * **Getting Started**
-  * [[Test 1]]
-  * [[Test 2]]
+  * [Test 1](<./Test 1.md>)
+  * [Test 2](<./Test 2.md>)
 
 * **Password Management**
-  * [[sample-1password|How to Use 1Password]]
+  * [How to Use 1Password](<./sample-1password.md>)
 
 * **Online Banking**
   * [Banking Setup](banking-setup.md)
