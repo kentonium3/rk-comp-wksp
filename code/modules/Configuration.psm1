@@ -1,6 +1,36 @@
-﻿# ============================================================================
+# ============================================================================
 # Configuration.psm1 - Centralized configuration management
 # ============================================================================
+
+function ConvertTo-Hashtable {
+    [CmdletBinding()]
+    param(
+        [Parameter(ValueFromPipeline)]
+        $InputObject
+    )
+    
+    process {
+        if ($null -eq $InputObject) { return $null }
+        
+        if ($InputObject -is [System.Collections.IEnumerable] -and $InputObject -isnot [string]) {
+            $collection = @()
+            foreach ($object in $InputObject) {
+                $collection += ConvertTo-Hashtable $object
+            }
+            return ,$collection
+        }
+        elseif ($InputObject -is [PSCustomObject]) {
+            $hash = @{}
+            foreach ($property in $InputObject.PSObject.Properties) {
+                $hash[$property.Name] = ConvertTo-Hashtable $property.Value
+            }
+            return $hash
+        }
+        else {
+            return $InputObject
+        }
+    }
+}
 
 function Get-RKConfig {
     [CmdletBinding()]
@@ -13,7 +43,7 @@ function Get-RKConfig {
     $defaultConfig = @{
         support = @{
             contacts = @(
-                @{ name = "Kent Gale"; email = "kent@example.com" }
+                @{ name = "Kent Gale"; email = "kentgale@gmail.com" }
             )
             emailFrom = "robkanzer@robkanzer.com"
             smtpServer = "smtp.gmail.com"
@@ -41,7 +71,9 @@ function Get-RKConfig {
     
     if (Test-Path $configPath) {
         try {
-            $config = Get-Content $configPath -Raw | ConvertFrom-Json -AsHashtable
+            # PowerShell 5.1 compatible JSON parsing
+            $jsonObject = Get-Content $configPath -Raw | ConvertFrom-Json
+            $config = ConvertTo-Hashtable $jsonObject
             
             # Ensure paths are expanded for current user/machine
             $config = Expand-ConfigPaths -Config $config
