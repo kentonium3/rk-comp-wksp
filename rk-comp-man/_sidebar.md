@@ -1,23 +1,23 @@
 * [🏠 Home](/)
 
 * **Getting Started**
-  * [Test 1](<./Test 1.md>)
-  * [Test 2](<./Test 2.md>)
+  * [Test 1](<./Test files/Test 1.md>)
+  * [Test 2](<./Test files/Test 2.md>)
 
 * **Password Management**
-  * [How to Use 1Password](<./sample-1password.md>)
+  * [How to Use 1Password](<./Test files/sample-1password.md>)
 
 * **Online Banking**
-  * [Banking Setup](banking-setup.md)
-  * [Security Tips](browser-security.md)
+  * [Banking Setup](<./banking-setup.md>)
+  * [Security Tips](<./browser-security.md>)
 
 * **Finding Files**
-  * [Desktop & Documents](finding-files.md)
-  * [Downloads Folder](downloads.md)
+  * [Desktop & Documents](<./finding-files.md>)
+  * [Downloads Folder](<./downloads.md>)
 
 * **Troubleshooting**
-  * [Common Problems](troubleshooting.md)
-  * [When Things Go Wrong](emergency-help.md)
+  * [Common Problems](<./troubleshooting.md>)
+  * [When Things Go Wrong](<./emergency-help.md>)
 
 ---
 

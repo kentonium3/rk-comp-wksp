@@ -30,8 +30,8 @@
 
 ## Related Topics
 
-- [Setting up Online Banking](banking-setup.md)
-- [Browser Security Tips](browser-security.md)
+- [Setting up Online Banking](<../banking-setup.md>)
+- [Browser Security Tips](<../browser-security.md>)
 
 ---
 
