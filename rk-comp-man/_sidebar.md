@@ -1,23 +1,23 @@
 * [🏠 Home](/)
 
 * **Getting Started**
-  * [Test 1](<./Test 1.md>)
-  * [Test 2](<./Test 2.md>)
+  * [[Test 1]]
+  * [[Test 2]]
 
 * **Password Management**
-  * [How to Use 1Password](<./sample-1password.md>)
+  * [[sample-1password|How to Use 1Password]]
 
 * **Online Banking**
-  * [Banking Setup](banking-setup.md)
-  * [Security Tips](browser-security.md)
+  * [[banking-setup|Banking Setup]]
+  * [[browser-security|Security Tips]]
 
 * **Finding Files**
-  * [Desktop & Documents](finding-files.md)
-  * [Downloads Folder](downloads.md)
+  * [[finding-files|Desktop & Documents]]
+  * [[downloads|Downloads Folder]]
 
 * **Troubleshooting**
-  * [Common Problems](troubleshooting.md)
-  * [When Things Go Wrong](emergency-help.md)
+  * [[troubleshooting|Common Problems]]
+  * [[emergency-help|When Things Go Wrong]]
 
 ---
 
