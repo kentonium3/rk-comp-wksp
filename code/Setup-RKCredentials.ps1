@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # Setup-RKCredentials.ps1 - One-time setup for Gmail App Password
 # ============================================================================
 
@@ -72,7 +72,7 @@ try {
         exit 1
     }
     
-    Write-Host "✓ Credential stored successfully!" -ForegroundColor Green
+    Write-Host "[OK] Credential stored successfully!" -ForegroundColor Green
     Write-Host ""
     Write-Host "Testing email configuration..." -ForegroundColor Yellow
     
@@ -94,14 +94,14 @@ Test completed successfully.
 "@
         
         Send-RKEmail -Subject "Test - Credential Setup Complete" -Body $testBody
-        Write-Host "✓ Email test successful! Credentials configured correctly." -ForegroundColor Green
+        Write-Host "[OK] Email test successful! Credentials configured correctly." -ForegroundColor Green
         
         # Log the successful setup
         Write-RKLog "Gmail credentials configured and tested successfully" -Level 'SUCCESS' -Component 'SETUP'
         
     }
     catch {
-        Write-Host "✗ Email test failed: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "[X] Email test failed: $($_.Exception.Message)" -ForegroundColor Red
         Write-Host ""
         Write-Host "Possible issues:" -ForegroundColor Yellow
         Write-Host "- App password may be incorrect" -ForegroundColor White
@@ -142,7 +142,7 @@ Test completed successfully.
             $updateScript = Join-Path $scriptDir "Update-Manual.ps1"
             if (Test-Path $updateScript) {
                 & $updateScript -Force
-                Write-Host "✓ Initial manual update completed!" -ForegroundColor Green
+                Write-Host "[OK] Initial manual update completed!" -ForegroundColor Green
             } else {
                 Write-Host "Update-Manual.ps1 not found. Please run it manually later." -ForegroundColor Yellow
             }

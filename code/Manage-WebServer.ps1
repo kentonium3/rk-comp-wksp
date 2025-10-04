@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # Manage-WebServer.ps1 - Web server management utility
 # ============================================================================
 
@@ -160,7 +160,7 @@ try {
                 $message = "Web server is already running on port $($config.webServer.port)"
                 Write-RKLog $message -Level 'SUCCESS' -Component 'WEBSERVER'
                 if (-not $Silent) {
-                    Write-Host "✓ $message" -ForegroundColor Green
+                    Write-Host "[OK] $message" -ForegroundColor Green
                 }
             } else {
                 $startScript = Join-Path $scriptDir "Start-WebServer.ps1"
@@ -172,19 +172,19 @@ try {
                     
                     if (Test-WebServerStatus) {
                         if (-not $Silent) {
-                            Write-Host "✓ Web server started successfully" -ForegroundColor Green
+                            Write-Host "[OK] Web server started successfully" -ForegroundColor Green
                             Write-Host "  URL: http://localhost:$($config.webServer.port)" -ForegroundColor Cyan
                         }
                     } else {
                         if (-not $Silent) {
-                            Write-Host "✗ Web server failed to start" -ForegroundColor Red
+                            Write-Host "[X] Web server failed to start" -ForegroundColor Red
                         }
                         exit 1
                     }
                 } else {
                     Write-RKLog "Start-WebServer.ps1 not found" -Level 'ERROR' -Component 'WEBSERVER'
                     if (-not $Silent) {
-                        Write-Host "✗ Start-WebServer.ps1 not found" -ForegroundColor Red
+                        Write-Host "[X] Start-WebServer.ps1 not found" -ForegroundColor Red
                     }
                     exit 1
                 }
@@ -205,11 +205,11 @@ try {
                 
                 if ($stopped -or -not (Test-WebServerStatus)) {
                     if (-not $Silent) {
-                        Write-Host "✓ Web server stopped successfully" -ForegroundColor Green
+                        Write-Host "[OK] Web server stopped successfully" -ForegroundColor Green
                     }
                 } else {
                     if (-not $Silent) {
-                        Write-Host "✗ Failed to stop web server" -ForegroundColor Red
+                        Write-Host "[X] Failed to stop web server" -ForegroundColor Red
                     }
                     exit 1
                 }
@@ -237,19 +237,19 @@ try {
                 
                 if (Test-WebServerStatus) {
                     if (-not $Silent) {
-                        Write-Host "✓ Web server restarted successfully" -ForegroundColor Green
+                        Write-Host "[OK] Web server restarted successfully" -ForegroundColor Green
                         Write-Host "  URL: http://localhost:$($config.webServer.port)" -ForegroundColor Cyan
                     }
                 } else {
                     if (-not $Silent) {
-                        Write-Host "✗ Web server failed to restart" -ForegroundColor Red
+                        Write-Host "[X] Web server failed to restart" -ForegroundColor Red
                     }
                     exit 1
                 }
             } else {
                 Write-RKLog "Start-WebServer.ps1 not found" -Level 'ERROR' -Component 'WEBSERVER'
                 if (-not $Silent) {
-                    Write-Host "✗ Start-WebServer.ps1 not found" -ForegroundColor Red
+                    Write-Host "[X] Start-WebServer.ps1 not found" -ForegroundColor Red
                 }
                 exit 1
             }
@@ -260,7 +260,7 @@ try {
             
             if (-not $Silent) {
                 Write-Host "Web Server Status:" -ForegroundColor Cyan
-                Write-Host "  Running: $(if($status.IsRunning){'✓ Yes'}else{'✗ No'})" -ForegroundColor $(if($status.IsRunning){'Green'}else{'Red'})
+                Write-Host "  Running: $(if($status.IsRunning){'[OK] Yes'}else{'[X] No'})" -ForegroundColor $(if($status.IsRunning){'Green'}else{'Red'})
                 Write-Host "  Port: $($status.Port)" -ForegroundColor Gray
                 Write-Host "  URL: $($status.URL)" -ForegroundColor Gray
                 
@@ -286,13 +286,13 @@ try {
                     $response = Invoke-WebRequest -Uri $status.URL -TimeoutSec 5 -UseBasicParsing
                     Write-RKLog "Web server connectivity test passed (Status: $($response.StatusCode))" -Level 'SUCCESS' -Component 'WEBSERVER'
                     if (-not $Silent) {
-                        Write-Host "  Connectivity: ✓ OK (HTTP $($response.StatusCode))" -ForegroundColor Green
+                        Write-Host "  Connectivity: [OK] OK (HTTP $($response.StatusCode))" -ForegroundColor Green
                     }
                 }
                 catch {
                     Write-RKLog "Web server connectivity test failed: $($_.Exception.Message)" -Level 'WARN' -Component 'WEBSERVER'
                     if (-not $Silent) {
-                        Write-Host "  Connectivity: ✗ Failed ($($_.Exception.Message))" -ForegroundColor Red
+                        Write-Host "  Connectivity: [X] Failed ($($_.Exception.Message))" -ForegroundColor Red
                     }
                 }
             }
@@ -345,7 +345,7 @@ try {
             
             if ($killed) {
                 if (-not $Silent) {
-                    Write-Host "✓ Web server processes terminated" -ForegroundColor Green
+                    Write-Host "[OK] Web server processes terminated" -ForegroundColor Green
                 }
             } else {
                 if (-not $Silent) {
@@ -365,7 +365,7 @@ catch {
     Write-RKLog $errorMsg -Level 'ERROR' -Component 'WEBSERVER'
     
     if (-not $Silent) {
-        Write-Host "✗ $errorMsg" -ForegroundColor Red
+        Write-Host "[X] $errorMsg" -ForegroundColor Red
     }
     exit 1
 }

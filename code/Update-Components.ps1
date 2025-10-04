@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # Update-Components.ps1 - System component updates (Python, Git, future tools)
 # ============================================================================
 
@@ -242,10 +242,10 @@ User: $($config.system.userName)
 Timestamp: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
 
 Successful: $($successfulUpdates.Count)
-$($successfulUpdates | ForEach-Object { "  ✓ $_" } | Out-String)
+$($successfulUpdates | ForEach-Object { "  [OK] $_" } | Out-String)
 
 Failed: $($failedUpdates.Count)
-$($failedUpdates | ForEach-Object { "  ✗ $_" } | Out-String)
+$($failedUpdates | ForEach-Object { "  [X] $_" } | Out-String)
 
 Installation Logs:
 $($installationLogs | Out-String)

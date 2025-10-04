@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # Uninstall-RKSystem.ps1 - Complete system removal and cleanup
 # ============================================================================
 
@@ -73,11 +73,11 @@ try {
             $removedItems += "Web server process (PID: $($process.Id))"
         }
         
-        if (-not $Silent) { Write-Host "  ✓ Web server stopped" -ForegroundColor Green }
+        if (-not $Silent) { Write-Host "  [OK] Web server stopped" -ForegroundColor Green }
     }
     catch {
         $failedItems += "Web server stop: $($_.Exception.Message)"
-        if (-not $Silent) { Write-Host "  ⚠ Web server stop failed: $($_.Exception.Message)" -ForegroundColor Yellow }
+        if (-not $Silent) { Write-Host "  [!] Web server stop failed: $($_.Exception.Message)" -ForegroundColor Yellow }
     }
     
     # Step 2: Remove Scheduled Tasks
@@ -95,12 +95,12 @@ try {
             if ($task) {
                 Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
                 $removedItems += "Scheduled task: $taskName"
-                if (-not $Silent) { Write-Host "  ✓ Removed task: $taskName" -ForegroundColor Green }
+                if (-not $Silent) { Write-Host "  [OK] Removed task: $taskName" -ForegroundColor Green }
             }
         }
         catch {
             $failedItems += "Scheduled task $taskName: $($_.Exception.Message)"
-            if (-not $Silent) { Write-Host "  ⚠ Failed to remove task $taskName: $($_.Exception.Message)" -ForegroundColor Yellow }
+            if (-not $Silent) { Write-Host "  [!] Failed to remove task $taskName: $($_.Exception.Message)" -ForegroundColor Yellow }
         }
     }
     
@@ -119,12 +119,12 @@ try {
             if (Test-Path $shortcutPath) {
                 Remove-Item $shortcutPath -Force
                 $removedItems += "Desktop shortcut: $shortcut"
-                if (-not $Silent) { Write-Host "  ✓ Removed: $shortcut" -ForegroundColor Green }
+                if (-not $Silent) { Write-Host "  [OK] Removed: $shortcut" -ForegroundColor Green }
             }
         }
         catch {
             $failedItems += "Desktop shortcut $shortcut: $($_.Exception.Message)"
-            if (-not $Silent) { Write-Host "  ⚠ Failed to remove $shortcut: $($_.Exception.Message)" -ForegroundColor Yellow }
+            if (-not $Silent) { Write-Host "  [!] Failed to remove $shortcut: $($_.Exception.Message)" -ForegroundColor Yellow }
         }
     }
     
@@ -135,14 +135,14 @@ try {
         if (Test-Path $repoPath) {
             Remove-Item $repoPath -Recurse -Force
             $removedItems += "Repository directory: $repoPath"
-            if (-not $Silent) { Write-Host "  ✓ Repository removed" -ForegroundColor Green }
+            if (-not $Silent) { Write-Host "  [OK] Repository removed" -ForegroundColor Green }
         } else {
-            if (-not $Silent) { Write-Host "  ✓ Repository not found (already removed)" -ForegroundColor Green }
+            if (-not $Silent) { Write-Host "  [OK] Repository not found (already removed)" -ForegroundColor Green }
         }
     }
     catch {
         $failedItems += "Repository removal: $($_.Exception.Message)"
-        if (-not $Silent) { Write-Host "  ✗ Failed to remove repository: $($_.Exception.Message)" -ForegroundColor Red }
+        if (-not $Silent) { Write-Host "  [X] Failed to remove repository: $($_.Exception.Message)" -ForegroundColor Red }
     }
     
     # Step 5: Remove Manual Content
@@ -157,19 +157,19 @@ try {
                     Remove-Item $item.FullName -Recurse -Force
                 }
                 $removedItems += "Manual content (logs preserved): $deployPath"
-                if (-not $Silent) { Write-Host "  ✓ Manual content removed (logs preserved)" -ForegroundColor Green }
+                if (-not $Silent) { Write-Host "  [OK] Manual content removed (logs preserved)" -ForegroundColor Green }
             } else {
                 Remove-Item $deployPath -Recurse -Force
                 $removedItems += "Manual content directory: $deployPath"
-                if (-not $Silent) { Write-Host "  ✓ Manual content removed" -ForegroundColor Green }
+                if (-not $Silent) { Write-Host "  [OK] Manual content removed" -ForegroundColor Green }
             }
         } else {
-            if (-not $Silent) { Write-Host "  ✓ Manual content not found (already removed)" -ForegroundColor Green }
+            if (-not $Silent) { Write-Host "  [OK] Manual content not found (already removed)" -ForegroundColor Green }
         }
     }
     catch {
         $failedItems += "Manual content removal: $($_.Exception.Message)"
-        if (-not $Silent) { Write-Host "  ✗ Failed to remove manual content: $($_.Exception.Message)" -ForegroundColor Red }
+        if (-not $Silent) { Write-Host "  [X] Failed to remove manual content: $($_.Exception.Message)" -ForegroundColor Red }
     }
     
     # Step 6: Remove Stored Credentials
@@ -193,11 +193,11 @@ try {
                 }
             }
             
-            if (-not $Silent) { Write-Host "  ✓ Credentials removed" -ForegroundColor Green }
+            if (-not $Silent) { Write-Host "  [OK] Credentials removed" -ForegroundColor Green }
         }
         catch {
             $failedItems += "Credential removal: $($_.Exception.Message)"
-            if (-not $Silent) { Write-Host "  ⚠ Failed to remove some credentials: $($_.Exception.Message)" -ForegroundColor Yellow }
+            if (-not $Silent) { Write-Host "  [!] Failed to remove some credentials: $($_.Exception.Message)" -ForegroundColor Yellow }
         }
     } else {
         if (-not $Silent) { Write-Host "Step 6: Keeping stored credentials (KeepCredentials flag set)" -ForegroundColor Gray }
@@ -229,11 +229,11 @@ try {
             }
         }
         
-        if (-not $Silent) { Write-Host "  ✓ Registry cleaned" -ForegroundColor Green }
+        if (-not $Silent) { Write-Host "  [OK] Registry cleaned" -ForegroundColor Green }
     }
     catch {
         $failedItems += "Registry cleanup: $($_.Exception.Message)"
-        if (-not $Silent) { Write-Host "  ⚠ Registry cleanup failed: $($_.Exception.Message)" -ForegroundColor Yellow }
+        if (-not $Silent) { Write-Host "  [!] Registry cleanup failed: $($_.Exception.Message)" -ForegroundColor Yellow }
     }
     
     # Final Summary
@@ -247,7 +247,7 @@ try {
         if ($removedItems.Count -gt 0) {
             Write-Host "Successfully removed $($removedItems.Count) items:" -ForegroundColor Green
             foreach ($item in $removedItems) {
-                Write-Host "  ✓ $item" -ForegroundColor Gray
+                Write-Host "  [OK] $item" -ForegroundColor Gray
             }
         }
         
@@ -255,7 +255,7 @@ try {
             Write-Host ""
             Write-Host "Failed to remove $($failedItems.Count) items:" -ForegroundColor Yellow
             foreach ($item in $failedItems) {
-                Write-Host "  ⚠ $item" -ForegroundColor Gray
+                Write-Host "  [!] $item" -ForegroundColor Gray
             }
             Write-Host ""
             Write-Host "These failures are typically non-critical." -ForegroundColor Yellow

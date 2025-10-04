@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # Deploy-RKSystem.ps1 - Complete system deployment and setup
 # ============================================================================
 
@@ -44,12 +44,12 @@ try {
     try {
         $gitVersion = git --version 2>&1
         if ($gitVersion -match "git version") {
-            Write-Host "  ✓ Git found: $gitVersion" -ForegroundColor Green
+            Write-Host "  [OK] Git found: $gitVersion" -ForegroundColor Green
             $gitAvailable = $true
         }
     }
     catch {
-        Write-Host "  ✗ Git not found" -ForegroundColor Red
+        Write-Host "  [X] Git not found" -ForegroundColor Red
     }
     
     # Check if Python is available
@@ -57,12 +57,12 @@ try {
     try {
         $pythonVersion = python --version 2>&1
         if ($pythonVersion -match "Python \d+\.\d+") {
-            Write-Host "  ✓ Python found: $pythonVersion" -ForegroundColor Green
+            Write-Host "  [OK] Python found: $pythonVersion" -ForegroundColor Green
             $pythonAvailable = $true
         }
     }
     catch {
-        Write-Host "  ✗ Python not found" -ForegroundColor Red
+        Write-Host "  [X] Python not found" -ForegroundColor Red
     }
     
     # Check if winget is available for installing missing components
@@ -70,12 +70,12 @@ try {
     try {
         $wingetVersion = winget --version 2>&1
         if ($wingetVersion -match "v\d+\.\d+") {
-            Write-Host "  ✓ Windows Package Manager found: $wingetVersion" -ForegroundColor Green
+            Write-Host "  [OK] Windows Package Manager found: $wingetVersion" -ForegroundColor Green
             $wingetAvailable = $true
         }
     }
     catch {
-        Write-Host "  ✗ Windows Package Manager not found" -ForegroundColor Yellow
+        Write-Host "  [X] Windows Package Manager not found" -ForegroundColor Yellow
     }
     
     # Step 2: Install Missing Components
@@ -88,11 +88,11 @@ try {
                 Write-Host "  Installing Git..." -ForegroundColor Gray
                 winget install --id Git.Git --silent --accept-package-agreements --accept-source-agreements | Out-Null
                 if ($LASTEXITCODE -eq 0 -or $LASTEXITCODE -eq -1978335189) {
-                    Write-Host "  ✓ Git installed" -ForegroundColor Green
+                    Write-Host "  [OK] Git installed" -ForegroundColor Green
                     # Refresh PATH
                     $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH", "User")
                 } else {
-                    Write-Host "  ✗ Git installation failed" -ForegroundColor Red
+                    Write-Host "  [X] Git installation failed" -ForegroundColor Red
                 }
             }
             
@@ -100,15 +100,15 @@ try {
                 Write-Host "  Installing Python..." -ForegroundColor Gray
                 winget install --id Python.Python.3.12 --silent --accept-package-agreements --accept-source-agreements | Out-Null
                 if ($LASTEXITCODE -eq 0 -or $LASTEXITCODE -eq -1978335189) {
-                    Write-Host "  ✓ Python installed" -ForegroundColor Green
+                    Write-Host "  [OK] Python installed" -ForegroundColor Green
                     # Refresh PATH
                     $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH", "User")
                 } else {
-                    Write-Host "  ✗ Python installation failed" -ForegroundColor Red
+                    Write-Host "  [X] Python installation failed" -ForegroundColor Red
                 }
             }
         } else {
-            Write-Host "  ⚠ Cannot install components automatically - Windows Package Manager not available" -ForegroundColor Yellow
+            Write-Host "  [!] Cannot install components automatically - Windows Package Manager not available" -ForegroundColor Yellow
             Write-Host "  Please install Git and Python manually before continuing." -ForegroundColor Yellow
             Write-Host ""
             Write-Host "  Git: https://git-scm.com/download/windows" -ForegroundColor White
@@ -121,7 +121,7 @@ try {
             }
         }
     } else {
-        Write-Host "  ✓ All prerequisites satisfied" -ForegroundColor Green
+        Write-Host "  [OK] All prerequisites satisfied" -ForegroundColor Green
     }
     
     # Step 3: Clone Repository
@@ -155,7 +155,7 @@ try {
         Pop-Location
         
         if (Test-Path $repoPath) {
-            Write-Host "  ✓ Repository cloned successfully" -ForegroundColor Green
+            Write-Host "  [OK] Repository cloned successfully" -ForegroundColor Green
         } else {
             throw "Failed to clone repository"
         }
@@ -168,7 +168,7 @@ try {
     git config credential.helper manager-core
     git config credential.useHttpPath true
     Pop-Location
-    Write-Host "  ✓ Git configuration updated" -ForegroundColor Green
+    Write-Host "  [OK] Git configuration updated" -ForegroundColor Green
     Write-Host "    Note: If prompted for GitHub credentials, use kentonium3 username" -ForegroundColor Gray
     
     # Step 4: Create Configuration
@@ -211,7 +211,7 @@ try {
     }
     
     $config | ConvertTo-Json -Depth 10 | Set-Content $configPath -Encoding UTF8
-    Write-Host "  ✓ Configuration file created" -ForegroundColor Green
+    Write-Host "  [OK] Configuration file created" -ForegroundColor Green
     
     # Step 5: Initial Deployment
     Write-Host ""
@@ -224,12 +224,12 @@ try {
         Pop-Location
         
         if (Test-Path (Join-Path $deployPath "index.html")) {
-            Write-Host "  ✓ Manual content deployed" -ForegroundColor Green
+            Write-Host "  [OK] Manual content deployed" -ForegroundColor Green
         } else {
-            Write-Host "  ⚠ Manual deployment may have failed" -ForegroundColor Yellow
+            Write-Host "  [!] Manual deployment may have failed" -ForegroundColor Yellow
         }
     } else {
-        Write-Host "  ⚠ Update script not found in repository" -ForegroundColor Yellow
+        Write-Host "  [!] Update script not found in repository" -ForegroundColor Yellow
     }
     
     # Step 6: Create Desktop Shortcut
@@ -241,9 +241,9 @@ try {
     
     if (Test-Path $batchFile) {
         Copy-Item $batchFile $shortcutPath -Force
-        Write-Host "  ✓ Desktop shortcut created" -ForegroundColor Green
+        Write-Host "  [OK] Desktop shortcut created" -ForegroundColor Green
     } else {
-        Write-Host "  ⚠ Manual refresh batch file not found" -ForegroundColor Yellow
+        Write-Host "  [!] Manual refresh batch file not found" -ForegroundColor Yellow
     }
     
     # Step 7: Set up Scheduled Tasks
@@ -258,28 +258,28 @@ try {
                 $webServerTrigger = New-ScheduledTaskTrigger -AtLogOn -User $TargetUser
                 $webServerSettings = New-ScheduledTaskSettingsSet -Hidden -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -MultipleInstances IgnoreNew
                 Register-ScheduledTask -TaskName "RK-ComputerManual-WebServer" -Action $webServerAction -Trigger $webServerTrigger -Settings $webServerSettings -Description "Starts web server for Rob's Computer Manual" -User $TargetUser -Force | Out-Null
-                Write-Host "  ✓ Web server startup task created" -ForegroundColor Green
+                Write-Host "  [OK] Web server startup task created" -ForegroundColor Green
                 
                 # Daily update task
                 $updateAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-WindowStyle Hidden -ExecutionPolicy Bypass -File `"$repoPath\code\Update-Manual.ps1`" -Silent"
                 $updateTrigger = New-ScheduledTaskTrigger -Daily -At 9:00AM
                 $updateSettings = New-ScheduledTaskSettingsSet -Hidden -StartWhenAvailable -RunOnlyIfNetworkAvailable
                 Register-ScheduledTask -TaskName "RK-ComputerManual-DailyUpdate" -Action $updateAction -Trigger $updateTrigger -Settings $updateSettings -Description "Daily update of Rob's Computer Manual content" -User $TargetUser -Force | Out-Null
-                Write-Host "  ✓ Daily update task created" -ForegroundColor Green
+                Write-Host "  [OK] Daily update task created" -ForegroundColor Green
                 
                 # Weekly component update task
                 $componentAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-WindowStyle Hidden -ExecutionPolicy Bypass -File `"$repoPath\code\Update-Components.ps1`" -Silent"
                 $componentTrigger = New-ScheduledTaskTrigger -Weekly -WeeksInterval 1 -DaysOfWeek Sunday -At 8:00AM
                 $componentSettings = New-ScheduledTaskSettingsSet -Hidden -StartWhenAvailable -RunOnlyIfNetworkAvailable
                 Register-ScheduledTask -TaskName "RK-ComputerManual-WeeklyMaintenance" -Action $componentAction -Trigger $componentTrigger -Settings $componentSettings -Description "Weekly maintenance and component updates" -User $TargetUser -Force | Out-Null
-                Write-Host "  ✓ Weekly maintenance task created" -ForegroundColor Green
+                Write-Host "  [OK] Weekly maintenance task created" -ForegroundColor Green
                 
             }
             catch {
-                Write-Host "  ✗ Failed to create scheduled tasks: $($_.Exception.Message)" -ForegroundColor Red
+                Write-Host "  [X] Failed to create scheduled tasks: $($_.Exception.Message)" -ForegroundColor Red
             }
         } else {
-            Write-Host "  ⚠ Administrator privileges required for scheduled tasks" -ForegroundColor Yellow
+            Write-Host "  [!] Administrator privileges required for scheduled tasks" -ForegroundColor Yellow
             Write-Host "    Run this script as administrator to set up automated tasks" -ForegroundColor Yellow
         }
     } else {
@@ -299,10 +299,10 @@ try {
                 powershell.exe -ExecutionPolicy Bypass -File "Setup-RKCredentials.ps1"
                 Pop-Location
             } else {
-                Write-Host "  ⚠ Skipping credential setup - run Setup-RKCredentials.ps1 later" -ForegroundColor Yellow
+                Write-Host "  [!] Skipping credential setup - run Setup-RKCredentials.ps1 later" -ForegroundColor Yellow
             }
         } else {
-            Write-Host "  ⚠ Credential setup script not found" -ForegroundColor Yellow
+            Write-Host "  [!] Credential setup script not found" -ForegroundColor Yellow
         }
     } else {
         Write-Host "  Skipping credential setup (SkipCredentials flag set)" -ForegroundColor Gray
@@ -322,11 +322,11 @@ try {
         
         try {
             $response = Invoke-WebRequest -Uri "http://localhost:8080" -TimeoutSec 5 -UseBasicParsing
-            Write-Host "  ✓ Web server started successfully" -ForegroundColor Green
+            Write-Host "  [OK] Web server started successfully" -ForegroundColor Green
             Write-Host "  Manual URL: http://localhost:8080" -ForegroundColor Cyan
         }
         catch {
-            Write-Host "  ⚠ Web server may not have started properly" -ForegroundColor Yellow
+            Write-Host "  [!] Web server may not have started properly" -ForegroundColor Yellow
         }
     }
     

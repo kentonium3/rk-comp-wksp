@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # Health-Check.ps1 - Comprehensive system health check and diagnostics
 # ============================================================================
 
@@ -26,7 +26,7 @@ catch {
 function Show-HealthStatus {
     param($Name, $Status, $Details = "")
     
-    $icon = if ($Status) { "✓" } else { "✗" }
+    $icon = if ($Status) { "[OK]" } else { "[X]" }
     $color = if ($Status) { "Green" } else { "Red" }
     $statusText = if ($Status) { "OK" } else { "FAILED" }
     
@@ -56,13 +56,13 @@ OVERALL STATUS: $(if($Health.Overall){'HEALTHY'}else{'NEEDS ATTENTION'})
 COMPONENT STATUS
 ========================================
 
-Python: $(if($Health.Python){'✓ OK'}else{'✗ FAILED'})
-Git: $(if($Health.Git){'✓ OK'}else{'✗ FAILED'}) 
-Repository: $(if($Health.Repository){'✓ OK'}else{'✗ FAILED'})
-Web Server: $(if($Health.WebServer){'✓ OK'}else{'✗ FAILED'})
-Directories: $(if($Health.Directories){'✓ OK'}else{'✗ FAILED'})
-Credentials: $(if($Health.Credentials){'✓ OK'}else{'✗ FAILED'})
-Network: $(if($Health.Network){'✓ OK'}else{'✗ FAILED'})
+Python: $(if($Health.Python){'[OK] OK'}else{'[X] FAILED'})
+Git: $(if($Health.Git){'[OK] OK'}else{'[X] FAILED'}) 
+Repository: $(if($Health.Repository){'[OK] OK'}else{'[X] FAILED'})
+Web Server: $(if($Health.WebServer){'[OK] OK'}else{'[X] FAILED'})
+Directories: $(if($Health.Directories){'[OK] OK'}else{'[X] FAILED'})
+Credentials: $(if($Health.Credentials){'[OK] OK'}else{'[X] FAILED'})
+Network: $(if($Health.Network){'[OK] OK'}else{'[X] FAILED'})
 
 ========================================
 SYSTEM INFORMATION
@@ -128,7 +128,7 @@ Connection State: $($webServerProcess.State)
 DEPLOYMENT STATUS
 ========================================
 
-Deployment Valid: $(if($deploymentStatus.IsValid){'✓ YES'}else{'✗ NO'})
+Deployment Valid: $(if($deploymentStatus.IsValid){'[OK] YES'}else{'[X] NO'})
 "@
     
     if ($deploymentStatus.IsValid) {
@@ -297,11 +297,11 @@ try {
     Write-Host ""
     Write-Host "Deployment Status:" -ForegroundColor Yellow
     if ($deploymentStatus.IsValid) {
-        Write-Host "  ✓ Valid deployment" -ForegroundColor Green
+        Write-Host "  [OK] Valid deployment" -ForegroundColor Green
         Write-Host "  Last updated: $($deploymentStatus.LastUpdate)" -ForegroundColor Gray
         Write-Host "  Days since update: $($deploymentStatus.DaysSinceUpdate)" -ForegroundColor Gray
     } else {
-        Write-Host "  ✗ Invalid deployment: $($deploymentStatus.Reason)" -ForegroundColor Red
+        Write-Host "  [X] Invalid deployment: $($deploymentStatus.Reason)" -ForegroundColor Red
     }
     
     # Show log summary
