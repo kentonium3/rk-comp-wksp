@@ -217,19 +217,24 @@ try {
     Write-Host ""
     Write-Host "Step 5: Deploying Manual Content..." -ForegroundColor Yellow
     
-    $updateScript = Join-Path $repoPath "code\Update-Manual.ps1"
-    if (Test-Path $updateScript) {
-        Push-Location (Join-Path $repoPath "code")
-        powershell.exe -ExecutionPolicy Bypass -File "Update-Manual.ps1" -Force -Silent
-        Pop-Location
+    $sourceContent = Join-Path $repoPath "rk-comp-man"
+    
+    if (Test-Path $sourceContent) {
+        # Create deployment directory if it doesn't exist
+        if (-not (Test-Path $deployPath)) {
+            New-Item -Path $deployPath -ItemType Directory -Force | Out-Null
+        }
+        
+        # Copy all content from repository to deployment location
+        Copy-Item "$sourceContent\*" -Destination $deployPath -Recurse -Force
         
         if (Test-Path (Join-Path $deployPath "index.html")) {
             Write-Host "  [OK] Manual content deployed" -ForegroundColor Green
         } else {
-            Write-Host "  [!] Manual deployment may have failed" -ForegroundColor Yellow
+            Write-Host "  [!] Manual deployment may have failed - index.html not found" -ForegroundColor Yellow
         }
     } else {
-        Write-Host "  [!] Update script not found in repository" -ForegroundColor Yellow
+        Write-Host "  [!] Manual content not found in repository" -ForegroundColor Yellow
     }
     
     # Step 6: Create Desktop Shortcut
