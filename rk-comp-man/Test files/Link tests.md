@@ -47,19 +47,19 @@
 
 ### Image WikiLinks
 
-- ![[1password-main.png]]
-- ![[1password-search.png]]
-- ![[screenshot-desktop.png]]
-- ![[browser-settings.png]]
-- ![[diagram-system-overview.png]]
-- ![[workflow-diagram.png]]
+- ![](<../assets/screenshots/1password-main.png>)
+- ![](<../assets/screenshots/1password-search.png>)
+- ![](<../assets/screenshots/screenshot-desktop.png>)
+- ![](<../assets/screenshots/browser-settings.png>)
+- ![](<../assets/diagrams/diagram-system-overview.png>)
+- ![](<../assets/diagrams/workflow-diagram.png>)
 
 ### Image WikiLinks with Alt Text
 
-- ![[1password-main.png|1Password Main Interface]]
-- ![[1password-search.png|Searching in 1Password]]
-- ![[screenshot-desktop.png|Desktop Screenshot]]
-- ![[diagram-system-overview.png|System Overview Diagram]]
+- ![1Password Main Interface](<../assets/screenshots/1password-main.png>)
+- ![Searching in 1Password](<../assets/screenshots/1password-search.png>)
+- ![Desktop Screenshot](<../assets/screenshots/screenshot-desktop.png>)
+- ![System Overview Diagram](<../assets/diagrams/diagram-system-overview.png>)
 
 ## Markdown Links Format Examples
 
