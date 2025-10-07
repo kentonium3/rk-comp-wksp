@@ -4,7 +4,7 @@
 
 1Password is your digital vault for storing passwords, credit cards, and other sensitive information securely.
 
-![[1password-main.png|1Password Main Screen]]
+![1Password Main Screen](<../assets/screenshots/1password-main.png>)
 
 ## Basic Steps
 
@@ -20,7 +20,7 @@
 2. Click on the matching result
 3. Your password will be copied automatically
 
-![[1password-search.png|Search Results]]
+![Search Results](<../assets/screenshots/1password-search.png>)
 
 ## Quick Reference
 
@@ -30,8 +30,8 @@
 
 ## Related Topics
 
-- [[banking-setup|Setting up Online Banking]]
-- [[browser-security|Browser Security Tips]]
+- [Setting up Online Banking](<../banking-setup.md>)
+- [Browser Security Tips](<../browser-security.md>)
 
 ---
 
