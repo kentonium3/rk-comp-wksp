@@ -32,14 +32,57 @@ function Test-RKSystemHealth {
     return $results
 }
 
+function Find-PythonExecutable {
+    [CmdletBinding()]
+    param()
+    
+    # Try to find python command first
+    try {
+        $pythonCmd = Get-Command python -ErrorAction Stop
+        return $pythonCmd.Source
+    }
+    catch {
+        # Python not in PATH, search common locations
+        $searchPaths = @(
+            "$env:LOCALAPPDATA\Programs\Python\Python*\python.exe",
+            "C:\Python*\python.exe",
+            "C:\Program Files\Python*\python.exe",
+            "C:\Program Files (x86)\Python*\python.exe"
+        )
+        
+        foreach ($pattern in $searchPaths) {
+            $found = Get-ChildItem $pattern -ErrorAction SilentlyContinue | 
+                     Sort-Object LastWriteTime -Descending | 
+                     Select-Object -First 1
+            
+            if ($found) {
+                Write-RKLog "Found Python at: $($found.FullName)" -Level 'SUCCESS' -Component 'HEALTH'
+                return $found.FullName
+            }
+        }
+        
+        Write-RKLog "Python executable not found in common locations" -Level 'ERROR' -Component 'HEALTH'
+        return $null
+    }
+}
+
 function Test-PythonInstallation {
     [CmdletBinding()]
     param()
     
     try {
-        $pythonVersion = python --version 2>&1
+        $pythonPath = Find-PythonExecutable
+        if (-not $pythonPath) {
+            Write-RKLog "Python not found" -Level 'ERROR' -Component 'HEALTH'
+            return $false
+        }
+        
+        $pythonVersion = & $pythonPath --version 2>&1
         if ($pythonVersion -match "Python \d+\.\d+") {
             Write-RKLog "Python check passed: $pythonVersion" -Level 'SUCCESS' -Component 'HEALTH'
+            
+            # Store Python path for later use
+            $global:RKPythonPath = $pythonPath
             return $true
         }
         else {
@@ -323,4 +366,4 @@ function Get-WebServerProcess {
 }
 
 # Export functions
-Export-ModuleMember -Function Test-RKSystemHealth, Test-PythonInstallation, Test-GitInstallation, Test-RepositoryHealth, Test-WebServerStatus, Test-DirectoryStructure, Test-CredentialsConfigured, Test-NetworkConnectivity, Get-SystemDetails, Test-RequiredComponents, Get-WebServerProcess
+Export-ModuleMember -Function Test-RKSystemHealth, Find-PythonExecutable, Test-PythonInstallation, Test-GitInstallation, Test-RepositoryHealth, Test-WebServerStatus, Test-DirectoryStructure, Test-CredentialsConfigured, Test-NetworkConnectivity, Get-SystemDetails, Test-RequiredComponents, Get-WebServerProcess

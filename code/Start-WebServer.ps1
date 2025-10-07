@@ -53,6 +53,14 @@ try {
         exit 1
     }
     
+    # Get Python executable path
+    $pythonPath = Find-PythonExecutable
+    if (-not $pythonPath) {
+        $errorMsg = "Python executable not found. Web server cannot start."
+        Write-RKLog $errorMsg -Level 'ERROR' -Component 'WEBSERVER'
+        exit 1
+    }
+    
     if (-not $healthCheck.Directories) {
         Write-RKLog "Creating missing directories" -Component 'WEBSERVER'
         Repair-SystemDirectories | Out-Null
@@ -130,14 +138,14 @@ try {
         
         # Start Python web server as background job
         $scriptBlock = {
-            param($DocRoot, $Port)
+            param($DocRoot, $Port, $PythonExe)
             Set-Location $DocRoot
             
             # Use Python's HTTP server with improved error handling
-            python -m http.server $Port 2>&1
+            & $PythonExe -m http.server $Port 2>&1
         }
         
-        $job = Start-Job -ScriptBlock $scriptBlock -ArgumentList $docRoot, $port -Name "RK-WebServer"
+        $job = Start-Job -ScriptBlock $scriptBlock -ArgumentList $docRoot, $port, $pythonPath -Name "RK-WebServer"
         
         # Wait for server to start
         $retryCount = 0

@@ -103,6 +103,51 @@ try {
                     Write-Host "  [OK] Python installed" -ForegroundColor Green
                     # Refresh PATH
                     $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH", "User")
+                    
+                    # Ensure Python is in System PATH for scheduled tasks
+                    if ($isAdmin) {
+                        Write-Host "  Configuring Python for system-wide access..." -ForegroundColor Gray
+                        $pythonLocations = @(
+                            "$env:LOCALAPPDATA\Programs\Python\Python*",
+                            "C:\Python*",
+                            "C:\Program Files\Python*"
+                        )
+                        
+                        $pythonDir = $null
+                        foreach ($pattern in $pythonLocations) {
+                            $found = Get-Item $pattern -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+                            if ($found) {
+                                $pythonDir = $found.FullName
+                                break
+                            }
+                        }
+                        
+                        if ($pythonDir) {
+                            $systemPath = [Environment]::GetEnvironmentVariable("PATH", "Machine")
+                            $pathsToAdd = @($pythonDir, (Join-Path $pythonDir "Scripts"))
+                            $needsUpdate = $false
+                            
+                            foreach ($pathToAdd in $pathsToAdd) {
+                                if ($systemPath -notlike "*$pathToAdd*") {
+                                    $systemPath += ";$pathToAdd"
+                                    $needsUpdate = $true
+                                }
+                            }
+                            
+                            if ($needsUpdate) {
+                                [Environment]::SetEnvironmentVariable("PATH", $systemPath, "Machine")
+                                $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH", "User")
+                                Write-Host "  [OK] Python added to System PATH" -ForegroundColor Green
+                            } else {
+                                Write-Host "  [OK] Python already in System PATH" -ForegroundColor Green
+                            }
+                        } else {
+                            Write-Host "  [!] Could not locate Python installation directory" -ForegroundColor Yellow
+                        }
+                    } else {
+                        Write-Host "  [!] Admin privileges required to add Python to System PATH" -ForegroundColor Yellow
+                        Write-Host "      Scheduled tasks may not work reliably" -ForegroundColor Yellow
+                    }
                 } else {
                     Write-Host "  [X] Python installation failed" -ForegroundColor Red
                 }
