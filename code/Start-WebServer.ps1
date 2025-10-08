@@ -136,16 +136,19 @@ try {
             throw "Document root does not exist: $docRoot"
         }
         
-        # Start Python web server as background job
-        $scriptBlock = {
-            param($DocRoot, $Port, $PythonExe)
-            Set-Location $DocRoot
-            
-            # Use Python's HTTP server with improved error handling
-            & $PythonExe -m http.server $Port 2>&1
-        }
+        # Start Python web server as detached process
+        $processArgs = @(
+            "-m",
+            "http.server",
+            $port,
+            "--directory",
+            "`"$docRoot`""
+        )
         
-        $job = Start-Job -ScriptBlock $scriptBlock -ArgumentList $docRoot, $port, $pythonPath -Name "RK-WebServer"
+        $process = Start-Process -FilePath $pythonPath `
+                                 -ArgumentList $processArgs `
+                                 -WindowStyle Hidden `
+                                 -PassThru
         
         # Wait for server to start
         $retryCount = 0
@@ -164,11 +167,11 @@ try {
         
         # Verify server started successfully
         if ($serverStarted) {
-            Write-RKLog "Web server started successfully (Job ID: $($job.Id), Attempts: $retryCount)" -Level 'SUCCESS' -Component 'WEBSERVER'
+            Write-RKLog "Web server started successfully (PID: $($process.Id), Attempts: $retryCount)" -Level 'SUCCESS' -Component 'WEBSERVER'
             
-            # Save job information for later management
-            $jobInfo = @{
-                JobId = $job.Id
+            # Save process information for later management
+            $processInfo = @{
+                ProcessId = $process.Id
                 StartTime = Get-Date
                 Port = $port
                 DocRoot = $docRoot
@@ -176,8 +179,8 @@ try {
                 UserName = $config.system.userName
             }
             
-            $jobInfoPath = Join-Path $config.logging.path "webserver-job.json"
-            $jobInfo | ConvertTo-Json | Set-Content $jobInfoPath -Encoding UTF8
+            $processInfoPath = Join-Path $config.logging.path "webserver-process.json"
+            $processInfo | ConvertTo-Json | Set-Content $processInfoPath -Encoding UTF8
             
             # Test access to the web server
             try {
@@ -189,26 +192,20 @@ try {
             }
         }
         else {
-            # Check job status for error details
-            $jobState = if ($job) { $job.State } else { "Unknown" }
-            $jobError = if ($job -and $job.State -eq "Failed") { 
-                Receive-Job $job 2>&1 | Out-String 
-            } else { 
-                "No specific error information available" 
-            }
+            # Check process status for error details
+            $processState = if ($process -and -not $process.HasExited) { "Running" } else { "Stopped/Failed" }
             
-            throw "Web server failed to respond after $maxRetries seconds. Job State: $jobState. Error: $jobError"
+            throw "Web server failed to respond after $maxRetries seconds. Process State: $processState"
         }
     }
     catch {
         $errorMsg = "Failed to start web server: $($_.Exception.Message)"
         Write-RKLog $errorMsg -Level 'ERROR' -Component 'WEBSERVER'
         
-        # Clean up failed job
-        if ($job) {
+        # Clean up failed process
+        if ($process -and -not $process.HasExited) {
             try {
-                Stop-Job $job -ErrorAction SilentlyContinue
-                Remove-Job $job -ErrorAction SilentlyContinue
+                Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
             }
             catch {
                 # Ignore cleanup errors
