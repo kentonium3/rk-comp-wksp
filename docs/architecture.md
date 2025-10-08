@@ -117,7 +117,7 @@ The system has three distinct layers that work together:
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    AUTHORING LAYER                          │
-│                   (Kent's MacBook)                          │
+│             (Kent's MacBook or Windows PC)                  │
 │                                                             │
 │  • Obsidian editor - Write content in Markdown             │
 │  • Git version control - Track all changes                 │
