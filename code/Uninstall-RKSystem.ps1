@@ -109,6 +109,7 @@ try {
     
     $shortcuts = @(
         "Refresh Rob's Manual.bat",
+        "Rob's Computer Manual.url",
         "Computer Manual.lnk",
         "Rob's Computer Manual.lnk"
     )

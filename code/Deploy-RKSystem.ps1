@@ -282,18 +282,42 @@ try {
         Write-Host "  [!] Manual content not found in repository" -ForegroundColor Yellow
     }
     
-    # Step 6: Create Desktop Shortcut
+    # Step 6: Create Desktop Shortcuts
     Write-Host ""
-    Write-Host "Step 6: Creating Desktop Shortcut..." -ForegroundColor Yellow
+    Write-Host "Step 6: Creating Desktop Shortcuts..." -ForegroundColor Yellow
     
+    # 1. Refresh batch file shortcut
     $batchFile = Join-Path $repoPath "code\Manual-Refresh.bat"
-    $shortcutPath = Join-Path $desktopPath "Refresh Rob's Manual.bat"
+    $refreshShortcut = Join-Path $desktopPath "Refresh Rob's Manual.bat"
     
     if (Test-Path $batchFile) {
-        Copy-Item $batchFile $shortcutPath -Force
-        Write-Host "  [OK] Desktop shortcut created" -ForegroundColor Green
+        Copy-Item $batchFile $refreshShortcut -Force
+        Write-Host "  [OK] Refresh shortcut created" -ForegroundColor Green
     } else {
         Write-Host "  [!] Manual refresh batch file not found" -ForegroundColor Yellow
+    }
+    
+    # 2. Browser shortcut with custom icon
+    $iconFile = Join-Path $repoPath "code\RKMan.ico"
+    $browserShortcut = Join-Path $desktopPath "Rob's Computer Manual.url"
+    
+    if (Test-Path $iconFile) {
+        $urlContent = @"
+[InternetShortcut]
+URL=http://localhost:8080
+IconFile=$iconFile
+IconIndex=0
+"@
+        Set-Content -Path $browserShortcut -Value $urlContent -Encoding ASCII
+        Write-Host "  [OK] Browser shortcut created with custom icon" -ForegroundColor Green
+    } else {
+        # Create without custom icon if icon file missing
+        $urlContent = @"
+[InternetShortcut]
+URL=http://localhost:8080
+"@
+        Set-Content -Path $browserShortcut -Value $urlContent -Encoding ASCII
+        Write-Host "  [OK] Browser shortcut created (icon file not found)" -ForegroundColor Yellow
     }
     
     # Step 7: Set up Scheduled Tasks
