@@ -99,8 +99,8 @@ try {
             }
         }
         catch {
-            $failedItems += "Scheduled task $taskName: $($_.Exception.Message)"
-            if (-not $Silent) { Write-Host "  [!] Failed to remove task $taskName: $($_.Exception.Message)" -ForegroundColor Yellow }
+            $failedItems += "Scheduled task ${taskName}: $($_.Exception.Message)"
+            if (-not $Silent) { Write-Host "  [!] Failed to remove task ${taskName}: $($_.Exception.Message)" -ForegroundColor Yellow }
         }
     }
     
@@ -123,8 +123,8 @@ try {
             }
         }
         catch {
-            $failedItems += "Desktop shortcut $shortcut: $($_.Exception.Message)"
-            if (-not $Silent) { Write-Host "  [!] Failed to remove $shortcut: $($_.Exception.Message)" -ForegroundColor Yellow }
+            $failedItems += "Desktop shortcut ${shortcut}: $($_.Exception.Message)"
+            if (-not $Silent) { Write-Host "  [!] Failed to remove ${shortcut}: $($_.Exception.Message)" -ForegroundColor Yellow }
         }
     }
     
